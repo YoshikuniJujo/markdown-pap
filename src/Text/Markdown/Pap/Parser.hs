@@ -51,6 +51,7 @@ markdown :: [Text]
 
 markdown1 :: Text
 	= h:header				{ return h }
+	/ l:link				{ return l }
 	/ l:list				{ return $ List l }
 	/ c:code				{ return $ Code c }
 	/ p:paras				{ return $ Paras p }
@@ -86,14 +87,6 @@ fourSpaces :: ()
 	= ' ' ' ' ' ' ' '
 
 list :: List = _:cnt _:dmmy[deeper] l:list1 ls:list1'* _:shllw	{ return $ l : ls }
---	= _:cnt _:dmmy[deeper] l:list1 -- ls:list1'* _:shllw
---						{ return $ l : ls }
-{-
-	= ls:(_:listHead ' ' l:line '\n' s:subList { return $ BulItem l s })+
-						{ return ls }
-	/ ls:(_:nListHead ' ' l:line '\n' s:subList { return $ OrdItem l s })+
-						{ return ls }
-						-}
 
 cnt :: () = _:dmmy[reset] _:(' ' { count })*
 
@@ -105,13 +98,6 @@ list1 :: List1
 		{ return $ BulItem l $ fromMaybe [] ls }
 	/ _:nListHead ' ' l:line '\n' ls:list?
 		{ return $ OrdItem l $ fromMaybe [] ls }
-
-subList :: List
-	= ls:subList1*				{ return ls }
-
-subList1 :: List1
-	= _:fourSpaces _:listHead ' ' l:line '\n'	{ return $ BulItem l [] }
-	/ _:fourSpaces _:nListHead ' ' l:line '\n'	{ return $ OrdItem l [] }
 
 listHead :: ()
 	= '*' / '-' / '+'
@@ -132,5 +118,8 @@ shllw :: ()
 	/ !_:list
 
 dmmy :: () =
+
+link :: Text
+	= '[' t:<(/= ']')>+ ']'	'(' a:<(/= ')')>+ ')' { return $ Link t a "" }
 
 |]
