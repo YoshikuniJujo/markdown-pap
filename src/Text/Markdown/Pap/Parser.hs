@@ -109,7 +109,7 @@ paras :: [String]
 	= ps:para+				{ return ps }
 
 para :: String
-	= ls:(!_:listHead !_:header !_:fourSpaces l:line '\n' { return l })+ _:('\n' / !_ / !_:para)
+	= ls:(!_:listHead !_:nListHead !_:header !_:fourSpaces l:line '\n' { return l })+ _:('\n' / !_ / !_:para)
 						{ return $ unwords ls }
 
 shllw :: ()
