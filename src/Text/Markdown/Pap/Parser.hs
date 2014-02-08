@@ -52,7 +52,7 @@ markdown :: [Text]
 markdown1 :: Text
 	= h:header				{ return h }
 	/ l:link				{ return l }
-	/ l:list				{ return $ List l }
+	/ l:list '\n'*				{ return $ List l }
 	/ c:code				{ return $ Code c }
 	/ p:paras				{ return $ Paras p }
 
@@ -109,8 +109,8 @@ paras :: [String]
 	= ps:para+				{ return ps }
 
 para :: String
-	= ls:(!_:header !_:fourSpaces l:line '\n' { return l })+ _:('\n' / !_ / !_:para) !_:list
-						{ return $ concat ls }
+	= ls:(!_:listHead !_:header !_:fourSpaces l:line '\n' { return l })+ _:('\n' / !_ / !_:para)
+						{ return $ unwords ls }
 
 shllw :: ()
 	= _:dmmy[shallow]
