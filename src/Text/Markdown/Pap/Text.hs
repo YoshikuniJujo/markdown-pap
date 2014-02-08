@@ -9,6 +9,11 @@ data Text
 	| Link String Address Title
 	deriving Show
 
+-- type TextString = [TextString1]
+-- data TextString1 = Str String | Link String Address Title deriving Show
+-- or
+-- data TextString1 = Str String | Text Text deriving Show
+
 type List = [List1]
 data List1 = OrdItem String List | BulItem String List deriving Show
 
