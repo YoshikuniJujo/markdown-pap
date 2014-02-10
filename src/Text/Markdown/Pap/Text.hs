@@ -7,6 +7,7 @@ data Text
 	| Code String
 	| List List
 	| Link String Address Title
+	| Image String Address Title
 	deriving Show
 
 -- type TextString = [TextString1]

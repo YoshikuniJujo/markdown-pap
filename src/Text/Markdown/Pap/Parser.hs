@@ -52,6 +52,7 @@ markdown :: [Text]
 markdown1 :: Text
 	= h:header				{ return h }
 	/ l:link				{ return l }
+	/ i:image				{ return i }
 	/ l:list '\n'*				{ return $ List l }
 	/ c:code				{ return $ Code c }
 	/ p:paras				{ return $ Paras p }
@@ -109,7 +110,7 @@ paras :: [String]
 	= ps:para+				{ return ps }
 
 para :: String
-	= ls:(!_:listHead !_:nListHead !_:header !_:fourSpaces l:line '\n' { return l })+ _:('\n' / !_ / !_:para)
+	= ls:(!_:('!') !_:listHead !_:nListHead !_:header !_:fourSpaces l:line '\n' { return l })+ _:('\n' / !_ / !_:para)
 						{ return $ unwords ls }
 
 shllw :: ()
@@ -120,6 +121,11 @@ shllw :: ()
 dmmy :: () =
 
 link :: Text
-	= '[' t:<(/= ']')>+ ']'	'(' a:<(/= ')')>+ ')' { return $ Link t a "" }
+	= '[' t:<(/= ']')>+ ']' ' '* '(' a:<(/= ')')>+ ')' { return $ Link t a "" }
+
+image :: Text
+	= '!' '[' alt:<(/= ']')>+ ']' ' '* '(' addrs:<(`notElem` ")\"")>+ ' '*
+		'"' t:<(/= '"')>+ '"' ')'
+		{ return $ Image alt addrs t }
 
 |]
