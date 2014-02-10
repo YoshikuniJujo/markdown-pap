@@ -77,12 +77,15 @@ hyphens :: ()
 line :: String
 	= l:<(`notElem` "#\n")>+		{ return l }
 
+line' :: String
+	= l:<(`notElem` "\n")>+			{ return l }
+
 code :: String
 	= l:fourSpacesLine c:code		{ return $ l ++ c }
 	/ l:fourSpacesLine			{ return l }
 
 fourSpacesLine :: String
-	= _:fourSpaces l:line '\n'+		{ return $ l ++ "\n" }
+	= _:fourSpaces l:line' '\n'+		{ return $ l ++ "\n" }
 
 fourSpaces :: ()
 	= ' ' ' ' ' ' ' '
