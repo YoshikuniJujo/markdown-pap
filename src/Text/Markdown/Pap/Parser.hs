@@ -52,7 +52,7 @@ markdown :: [Text]
 markdown1 :: Text
 	= h:header				{ return h }
 	/ l:link				{ return l }
-	/ i:image				{ return i }
+	/ i:image '\n'*				{ return i }
 	/ l:list '\n'*				{ return $ List l }
 	/ c:code				{ return $ Code c }
 	/ p:paras				{ return $ Paras p }
@@ -124,7 +124,7 @@ link :: Text
 	= '[' t:<(/= ']')>+ ']' ' '* '(' a:<(/= ')')>+ ')' { return $ Link t a "" }
 
 image :: Text
-	= '!' '[' alt:<(/= ']')>+ ']' ' '* '(' addrs:<(`notElem` ")\"")>+ ' '*
+	= '!' '[' alt:<(/= ']')>+ ']' ' '* '(' addrs:<(`notElem` ")\" ")>+ ' '*
 		'"' t:<(/= '"')>+ '"' ')'
 		{ return $ Image alt addrs t }
 
