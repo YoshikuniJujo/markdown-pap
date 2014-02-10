@@ -51,7 +51,7 @@ markdown :: [Text]
 
 markdown1 :: Text
 	= h:header				{ return h }
-	/ l:link				{ return l }
+	/ l:link '\n'*				{ return l }
 	/ i:image '\n'*				{ return i }
 	/ l:list '\n'*				{ return $ List l }
 	/ c:code				{ return $ Code c }
