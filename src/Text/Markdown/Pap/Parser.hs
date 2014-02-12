@@ -85,7 +85,7 @@ code :: String
 	/ l:fourSpacesLine			{ return l }
 
 fourSpacesLine :: String
-	= _:fourSpaces l:line' '\n'+		{ return $ l ++ "\n" }
+	= _:fourSpaces l:line' ns:('\n' { return '\n' })+	{ return $ l ++ ns }
 
 fourSpaces :: ()
 	= ' ' ' ' ' ' ' '
